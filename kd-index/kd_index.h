@@ -8,16 +8,17 @@
 #include <vector>
 #include <string>
 
-class KdIndex {
+class ValueIndex {
 
 public:
-    KdIndex();
-    ~KdIndex();
+    ValueIndex();
+    ~ValueIndex();
     // insert a coordinate to kd-tree with bounded data
     void Insert(double* coord, void* data);
     void Insert(const std::string& value, void* data);
     // range query by the given coordinate and range, return num-nearest results
     std::vector<std::string*> Range(double* target_coord, double range, int num);
+    std::vector<std::string*> Range(const std::string& value, double range, int num);
     // extract coordinate key from input value
     void extractKey(const std::string& data, double* coord);
 

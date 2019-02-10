@@ -10,6 +10,7 @@
 #include "db/dbformat.h"
 #include "db/skiplist.h"
 #include "util/arena.h"
+#include "kd-index/kd_index.h"
 
 namespace leveldb {
 
@@ -59,6 +60,11 @@ class MemTable {
   // Else, return false.
   bool Get(const LookupKey& key, std::string* value, Status* s);
 
+  // Insert value into secondary index
+  void ValueIndexPut(const Slice& value, const Slice& key);
+  // Get key from seconday index by value
+  void ValueIndexGet(const Slice& value, std::string* data);
+
  private:
   ~MemTable();  // Private since only Unref() should be used to delete it
 
@@ -76,10 +82,11 @@ class MemTable {
   int refs_;
   Arena arena_;
   Table table_;
+  ValueIndex value_index_;
 
+  void operator=(const MemTable&);
   // No copying allowed
   MemTable(const MemTable&);
-  void operator=(const MemTable&);
 };
 
 }  // namespace leveldb

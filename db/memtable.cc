@@ -8,6 +8,8 @@
 #include "leveldb/env.h"
 #include "leveldb/iterator.h"
 #include "util/coding.h"
+#include "memtable.h"
+
 
 namespace leveldb {
 
@@ -140,6 +142,22 @@ bool MemTable::Get(const LookupKey& key, std::string* value, Status* s) {
     }
   }
   return false;
+}
+
+void MemTable::ValueIndexPut(const Slice &value, const Slice &key) {
+  std::string v = value.data();
+  std::string k = key.data();
+  value_index_.Insert(v, &k);
+}
+
+void MemTable::ValueIndexGet(const Slice &value, std::string *data) {
+  std::string v = value.data();
+  std::vector<std::string *> result = value_index_.Range(v, 50, 1);
+  if (!result.empty()) {
+    data = result[0];
+  } else{
+    delete(&data);
+  }
 }
 
 }  // namespace leveldb

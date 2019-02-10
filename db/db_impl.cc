@@ -586,6 +586,10 @@ void DBImpl::CompactRange(const Slice* begin, const Slice* end) {
   }
 }
 
+void DBImpl::RangeQuery(const Slice& value, std::string* data) {
+  mem_->ValueIndexGet(value, data);
+}
+
 void DBImpl::TEST_CompactRange(int level, const Slice* begin,
                                const Slice* end) {
   assert(level >= 0);

@@ -125,6 +125,8 @@ class MemTableInserter : public WriteBatch::Handler {
   virtual void Put(const Slice& key, const Slice& value) {
     mem_->Add(sequence_, kTypeValue, key, value);
     sequence_++;
+    // add value to secondary index
+    mem_->ValueIndexPut(value, key);
   }
   virtual void Delete(const Slice& key) {
     mem_->Add(sequence_, kTypeDeletion, key, Slice());

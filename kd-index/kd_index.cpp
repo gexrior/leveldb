@@ -6,23 +6,23 @@
 #include <iostream>
 #include "kd_index.h"
 
-KdIndex::KdIndex() {
+ValueIndex::ValueIndex() {
     tree_ = kd_create(2);
     kd_data_destructor(tree_, free);
 }
 
-KdIndex::~KdIndex() {
+ValueIndex::~ValueIndex() {
     kd_free(tree_);
 }
 
-void KdIndex::Insert(double *coord, void *data) {
+void ValueIndex::Insert(double *coord, void *data) {
     if (coord == nullptr) {
         return;
     }
     kd_insert(tree_, coord, data);
 }
 
-void KdIndex::Insert(const std::string &value, void *data) {
+void ValueIndex::Insert(const std::string &value, void *data) {
     try {
         double coord[2];
         extractKey(value, coord);
@@ -32,7 +32,7 @@ void KdIndex::Insert(const std::string &value, void *data) {
     }
 }
 
-std::vector<std::string *> KdIndex::Range(double *target_coord, double range, int num) {
+std::vector<std::string *> ValueIndex::Range(double *target_coord, double range, int num) {
     kdres *result = kd_nearest_range(tree_, target_coord, range);
     int count = 0;
     std::vector<std::string *> values;
@@ -45,10 +45,20 @@ std::vector<std::string *> KdIndex::Range(double *target_coord, double range, in
     return values;
 }
 
+std::vector<std::string *> ValueIndex::Range(const std::string &value, double range, int num) {
+    try {
+        double coord[2];
+        extractKey(value, coord);
+        return Range(coord, range, num);
+    } catch (...) {
+        return std::vector<std::string *>();
+    }
+}
+
 /**
  * convert string value to coordinate.
  */
-void KdIndex::extractKey(const std::string &data, double *coord) {
+void ValueIndex::extractKey(const std::string &data, double *coord) {
     std::string::size_type start, mid;
     start = 0;
     mid = data.find(',');

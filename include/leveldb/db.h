@@ -146,6 +146,10 @@ class LEVELDB_EXPORT DB {
   // Therefore the following call will compact the entire database:
   //    db->CompactRange(nullptr, nullptr);
   virtual void CompactRange(const Slice* begin, const Slice* end) = 0;
+
+  // Find key by value use secondary index.
+  virtual void RangeQuery(const Slice& value, std::string* data) = 0;
+
 };
 
 // Destroy the contents of the specified database.
