@@ -11,9 +11,9 @@ int main() {
     op.create_if_missing = true;
     Status status = DB::Open(op, "testdb", &db);
     assert(status.ok());
-    db->Put(WriteOptions(), "hello", "not world");
+    db->Put(WriteOptions(), "001", "not world");
     string s;
-    db->Get(ReadOptions(), "hello", &s);
+    db->Get(ReadOptions(), "001", &s);
     cout<<s<<endl;
     delete db;
     return 0;
