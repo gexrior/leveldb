@@ -19,7 +19,7 @@ int main() {
     db->Put(WriteOptions(), "002", "world");
     string s1;
     db->Get(ReadOptions(), "002", &s1);
-    cout<<s<<endl;
+    cout<<s1<<endl;
 
     delete db;
     return 0;
