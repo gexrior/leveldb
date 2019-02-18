@@ -22,7 +22,6 @@ int main() {
     db->Get(ReadOptions(), "002", &s1);
     cout<<s1<<endl;
 
-    db->Delete(WriteOptions(), "002");
 
     delete db;
     return 0;
